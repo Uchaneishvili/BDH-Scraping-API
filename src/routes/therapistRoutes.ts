@@ -18,7 +18,7 @@ export class TherapistRoutes {
      *     parameters:
      *       - in: query
      *         name: search
-     *         description: full text search, searches in ('userName')
+     *         description: full text search
      *         required: false
      *         type: string
      *     responses:
