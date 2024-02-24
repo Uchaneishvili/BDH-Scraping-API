@@ -117,12 +117,17 @@ export class TherapistController {
   }
 
   public async addTherapists(req: Request, res: Response): Promise<void> {
+    const data: ITherapist[] = []
     try {
-      const data: ITherapist[] = []
+      // clear database for new records
+      await TherapistModel.deleteMany({})
+
       await this.scrapeData(1, data)
       await this.generateCsv(data)
 
-      return createdResponse('CSV is downloaded successfully', res)
+      // add new records to database to create grid
+      const addedTherapists = await TherapistModel.insertMany(data)
+      return createdResponse(addedTherapists, res)
     } catch (error) {
       return handleError(error, res, 'Error while adding user.')
     }
