@@ -4,11 +4,11 @@ export enum IGender {
 }
 
 export interface ITherapist {
-  _id: string
-  firstName: string
-  lastName: string
-  zipCode: number
-  city: string
+  _id?: string
+  firstName?: string
+  lastName?: string
+  zipCode?: string
+  city?: string
   email?: string
-  gender: IGender
+  gender?: IGender
 }

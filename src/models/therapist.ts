@@ -11,8 +11,6 @@ const schema = new Schema(
     },
     zipCode: {
       type: String,
-      required: true,
-      unique: true,
     },
 
     city: {
@@ -20,7 +18,6 @@ const schema = new Schema(
     },
     email: {
       type: String,
-      required: true,
     },
     gender: {
       type: Number,
