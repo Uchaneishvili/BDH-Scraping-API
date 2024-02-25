@@ -15,13 +15,13 @@ import { Logger } from '../util/Logger'
 export class TherapistController {
   public async getTherapists(req: Request, res: Response): Promise<void> {
     try {
-      const [skip, limit] = generatePaging(req)
+      const [skip, limit, sort] = generatePaging(req)
       const query = {}
 
       const [therapists, totalCount] = await Promise.all([
         await TherapistModel.find(query)
           .lean()
-          .sort({ createdAt: -1 })
+          .sort(sort)
           .skip(skip)
           .limit(limit)
           .exec(),

@@ -1,23 +1,30 @@
+import { SortOrder } from 'mongoose'
+
+export type CompatibleSortOrder = 1 | -1
+
 export interface ISortParam {
-  [key: string]: number | string
+  [key: string]: SortOrder | string // Mongoose's SortOrder or string
 }
-export function generateSortQuery(sortParams: ISortParam): ISortParam {
-  let sort: ISortParam = {}
-  const sortValues: ISortParam = {
-    asc: 1,
+
+export function generateSortQuery(
+  sortParams: ISortParam,
+  defaultSort: Record<string, CompatibleSortOrder> = { createdAt: -1 }
+): Record<string, CompatibleSortOrder> {
+  let sort: Record<string, CompatibleSortOrder> = {}
+
+  const sortValues: Record<string, CompatibleSortOrder> = {
     ascend: 1,
-    desc: -1,
     descend: -1,
   }
 
   if (Object.keys(sortParams).length) {
     for (const key in sortParams) {
-      sort[key] = sortValues[sortParams[key]]
+      const sortOrder = sortParams[key]
+      sort[key] =
+        typeof sortOrder === 'string' ? sortValues[sortOrder] || -1 : sortOrder
     }
   } else {
-    sort = {
-      createdAt: -1,
-    }
+    sort = defaultSort
   }
 
   return sort
