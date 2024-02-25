@@ -100,8 +100,8 @@ export class TherapistController {
       Logger.error('Error during scraping:', err)
     }
   }
-
-  private async generateCsv(data: ITherapist[]): Promise<void> {
+  public async generateCsv(req: Request, res: Response): Promise<void> {
+    const data = req.body
     const csvWriter = createObjectCsvWriter({
       path: 'therapists.csv',
       header: [
@@ -115,6 +115,14 @@ export class TherapistController {
 
     try {
       await csvWriter.writeRecords(data)
+
+      res.setHeader('Content-Type', 'text/csv')
+      res.setHeader(
+        'Content-Disposition',
+        'attachment; filename=therapists.csv'
+      )
+
+      res.sendFile('therapists.csv', { root: '.' }) // assuming the file is in the root directory
       Logger.info('CSV Generated Successfully ')
     } catch (err) {
       Logger.error('Error generating CSV:', err)
@@ -128,7 +136,6 @@ export class TherapistController {
       await TherapistModel.deleteMany({})
 
       await this.scrapeData(1, data)
-      await this.generateCsv(data)
 
       // add new records to database to create grid
       const addedTherapists = await TherapistModel.insertMany(data)

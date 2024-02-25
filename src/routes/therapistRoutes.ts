@@ -31,6 +31,22 @@ export class TherapistRoutes {
 
     /**
      * @swagger
+     * /therapists/csv:
+     *   post:
+     *     description: generate Therapist CSV
+     *     tags: [Therapists]
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: generate therapist CSV
+     */
+    router.post('/csv', (req: Request, res: Response) => {
+      return this.therapistController.generateCsv(req, res)
+    })
+
+    /**
+     * @swagger
      * /therapists:
      *   post:
      *     description: create Therapist
