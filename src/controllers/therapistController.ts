@@ -11,13 +11,18 @@ import request from 'request-promise'
 import cheerio from 'cheerio'
 import { createObjectCsvWriter } from 'csv-writer'
 import { Logger } from '../util/Logger'
+import { generateSearch } from '../util/generateSearch'
 
 export class TherapistController {
   public async getTherapists(req: Request, res: Response): Promise<void> {
     try {
       const [skip, limit, sort] = generatePaging(req)
+      const { search } = req.query
       const query = {}
 
+      if (search) {
+        generateSearch(query, ['firstName', 'lastName', 'city'], <string>search)
+      }
       const [therapists, totalCount] = await Promise.all([
         await TherapistModel.find(query)
           .lean()
@@ -129,7 +134,7 @@ export class TherapistController {
       const addedTherapists = await TherapistModel.insertMany(data)
       return createdResponse(addedTherapists, res)
     } catch (error) {
-      return handleError(error, res, 'Error while adding user.')
+      return handleError(error, res, 'Error while adding therapists.')
     }
   }
 }
