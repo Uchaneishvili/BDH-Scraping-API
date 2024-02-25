@@ -1,8 +1,3 @@
-export enum IGender {
-  MALE = 0,
-  FEMALE = 1,
-}
-
 export interface ITherapist {
   _id?: string
   firstName?: string
@@ -10,5 +5,4 @@ export interface ITherapist {
   zipCode?: string
   city?: string
   email?: string
-  gender?: IGender
 }

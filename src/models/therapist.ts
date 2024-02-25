@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IGender, ITherapist } from '../types/therapists'
+import { ITherapist } from '../types/therapists'
 
 const schema = new Schema(
   {
@@ -18,10 +18,6 @@ const schema = new Schema(
     },
     email: {
       type: String,
-    },
-    gender: {
-      type: Number,
-      enum: [IGender.MALE, IGender.FEMALE],
     },
   },
   {
